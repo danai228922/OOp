@@ -1,0 +1,156 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+  <title>My LIFF App</title>
+  <style>
+    body { padding: 100px }
+    button { display: none; width: 50%; padding: 16px 0; margin: 16px auto }
+  </style>
+</head>
+<body>
+  <button id="btnShare" onclick="sendShare()">Share Target Picker</button>
+  <button id="btnLogin" onclick="liff.login()">Log In</button>
+  <button id="btnLogOut" onclick="logOut()">Log Out</button>
+  <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
+  <script>
+    async function sendShare() {
+      const result = await liff.shareTargetPicker([
+        {
+          "type": "flex",
+          "altText": "ส่งแบบตอบรับ",
+          "contents":{
+  "type": "bubble",
+  "size": "giga",
+  "hero": {
+    "type": "image",
+    "url": "https://www.img.in.th/images/abc02e6a49cb5c39bc8a943386613198.png",
+    "size": "full",
+    "aspectRatio": "30:15"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "image",
+            "size": "full",
+            "aspectRatio": "40:20",
+            "backgroundColor": "#0B0984",
+            "url": "https://www.img.in.th/images/e8a6fff251386537bc6cf11f52a693a0.png",
+            "action": {
+              "type": "uri",
+              "label": "action",
+              "uri": "https://forms.gle/wj99D3XjXzQqa19P6?openExternalBrowser=1"
+            }
+          }
+        ],
+        "backgroundColor": "#0B0984"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "image",
+            "size": "full",
+            "aspectRatio": "30:17",
+            "url": "https://www.img.in.th/images/efc9aff48efbfe34f3a6ae89b91652e6.png",
+            "action": {
+              "type": "uri",
+              "label": "action",
+              "uri": "https://bit.ly/3qa9Oei"
+            }
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "image",
+            "size": "full",
+            "aspectRatio": "30:15",
+            "url": "https://www.img.in.th/images/0a74f04556621b5d2d44da4bf6c9d833.png",
+            "action": {
+              "type": "uri",
+              "label": "action",
+              "uri": "https://datastudio.google.com/reporting/df5aebc7-d5b0-4b1d-8e2a-64c989f27696"
+            }
+          },
+          {
+            "type": "separator",
+            "margin": "sm"
+          },
+          {
+            "type": "text",
+            "text": "=ให้คลิกที่ภาพ แต่ละภาพ เพื่อดูรายละเอียด=",
+            "color": "#FFFFFFFF",
+            "weight": "bold"
+          },
+          {
+            "type": "separator"
+          }
+        ]
+      }
+    ],
+    "backgroundColor": "#5367A3"
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": ">>>ส่งต่อให้เพื่อน<<<",
+          "uri": "https://liff.line.me/1655879041-0Q4qWoJ8"
+        },
+        "style": "primary"
+      }
+    ],
+    "backgroundColor": "#008037"
+  }
+}
+        }
+      ])
+      if (result) {
+        alert(`[${result.status}] Message sent!`)
+      } else {
+        const [majorVer, minorVer, patchVer] = (liff.getLineVersion() || "").split('.');
+
+        if (minorVer === undefined) {
+          alert('ShareTargetPicker was canceled in external browser')
+          return
+        }
+
+        if (parseInt(majorVer) >= 10 && parseInt(minorVer) >= 10 && parseInt(patchVer) > 0) {
+          alert('ShareTargetPicker was canceled in LINE app')
+        }
+      }
+    }
+    function logOut() {
+      liff.logout()
+      window.location.reload()
+    }
+    async function main() {
+      await liff.init({ liffId: "1655879041-0Q4qWoJ8" })
+      if (liff.isLoggedIn()) {
+        document.getElementById("btnShare").style.display = "block"
+        if (!liff.isInClient()) {
+          document.getElementById("btnLogOut").style.display = "block"
+        }
+      } else {
+        document.getElementById("btnLogin").style.display = "block"
+      }
+    }
+    main()
+  </script>
+</body>
+</html>
